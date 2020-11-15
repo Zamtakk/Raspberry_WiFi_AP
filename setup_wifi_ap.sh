@@ -64,4 +64,4 @@ echo "Restarting hostapd"
 systemctl restart hostapd.service
 
 echo "Done!"
-echo "The AP is now running"
+echo "Reboot the Raspberry Pi for the changes to take effect."
