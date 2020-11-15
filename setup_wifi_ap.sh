@@ -48,10 +48,18 @@ cat <<EOT >> /etc/default/hostapd
 DAEMON_CONF="/etc/hostapd/hostapd.conf"
 EOT
 
+echo "Removing client connection"
+cat > /etc/wpa_supplicant/wpa_supplicant.conf <<EOF
+country=NL
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+EOF
+
 echo "Unmasking hostapd"
 systemctl unmask hostapd
 echo "Enabling hostapd"
 systemctl enable hostapd
+sleep 5
 echo "Restarting hostapd"
 systemctl restart hostapd.service
 
