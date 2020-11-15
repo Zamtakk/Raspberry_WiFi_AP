@@ -4,22 +4,29 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+echo"Installing AP software"
 apt-get install hostapd dnsmasq -y
+echo"Stopping hostapd"
 systemctl stop hostapd
+echo"Stopping dnsmasq"
 systemctl stop dnsmasq
 
+echo"Setting up /etc/dhcpcd.conf"
 cat <<EOT >> /etc/dhcpcd.conf
 interface wlan0
 static ip_address=10.0.1.1/24
 EOT
 
+echo"Copying over /etc/dnsmasq.conf /etc/dnsmasq.conf.orig"
 mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 
+echo"Setting up /etc/dnsmasq.conf"
 cat > /etc/dnsmasq.conf <<EOF
 interface=wlan0
   dhcp-range=10.0.1.2,10.0.1.15,255.255.255.0,24h
 EOF
 
+echo"Setting up /etc/hostapd/hostapd.conf"
 cat > /etc/hostapd/hostapd.conf <<EOF
 interface=wlan0
 hw_mode=g
@@ -36,10 +43,17 @@ ssid=PJSDV_TEMP
 wpa_passphrase=allhailthemightypi
 EOF
 
+echo"Setting up /etc/default/hostapd"
 cat <<EOT >> /etc/default/hostapd
 DAEMON_CONF="/etc/hostapd/hostapd.conf"
 EOT
 
+echo"Unmasking hostapd"
 systemctl unmask hostapd
+echo"Enabling hostapd"
 systemctl enable hostapd
+echo"Restarting hostapd"
 systemctl restart hostapd.service
+
+echo"Done!"
+echo"The AP is now running"
