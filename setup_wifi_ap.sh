@@ -23,7 +23,7 @@ mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 echo "Setting up /etc/dnsmasq.conf"
 cat > /etc/dnsmasq.conf <<EOF
 interface=wlan0
-  dhcp-range=10.0.1.2,10.0.1.15,255.255.255.0,24h
+  dhcp-range=10.0.1.2,10.0.1.250,255.255.255.0,1h
 EOF
 
 echo "Setting up /etc/hostapd/hostapd.conf"
@@ -39,7 +39,7 @@ wpa=2
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP
 rsn_pairwise=CCMP
-ssid=PJSDV_TEMP
+ssid=PJSDV_Groep13
 wpa_passphrase=allhailthemightypi
 EOF
 
